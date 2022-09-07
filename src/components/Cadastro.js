@@ -1,38 +1,79 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cadastro() {
+	const {
+		email,
+		setEmail,
+		name,
+		setName,
+		password,
+		setPassword,
+		confirm,
+		setConfirm,
+	} = useContext(UserContext);
+
+	const navigate = useNavigate();
+
+	function postCadastro(event) {
+		event.preventDefault();
+
+		const dados = {
+			email: email,
+			name: name,
+			password: password,
+			confirm: confirm,
+		};
+
+		console.log(dados);
+		const requisicao = axios.post('http://localhost:5000/cadastro', dados);
+		requisicao.then(deuBom).catch(deuRuim);
+
+		navigate('/');
+	}
+
+	function deuBom() {
+		console.log('Deu BOM!!!');
+	}
+
+	function deuRuim() {
+		console.log('Deu RUIM!!!');
+	}
+
 	return (
 		<Container>
 			<p>MyWallet</p>
 			<input
 				type='text'
-				// value={email}
-				// onChange={(e) => setEmail(e.target.value)}
+				value={name}
+				onChange={(e) => setName(e.target.value)}
 				placeholder='Nome'
 			/>
 			<input
 				type='text'
-				// value={email}
-				// onChange={(e) => setEmail(e.target.value)}
+				value={email}
+				onChange={(e) => setEmail(e.target.value)}
 				placeholder='E-mail'
 			/>
 			<input
 				type='text'
-				// value={password}
-				// onChange={(e) => setPassword(e.target.value)}
+				value={password}
+				onChange={(e) => setPassword(e.target.value)}
 				placeholder='Senha'
 			/>
 
 			<input
 				type='text'
-				// value={password}
-				// onChange={(e) => setPassword(e.target.value)}
+				value={confirm}
+				onChange={(e) => setConfirm(e.target.value)}
 				placeholder='Confirme a Senha'
 			/>
-			<Link to='/'>
-				<Cadastrar>Cadastrar</Cadastrar>
-			</Link>
+
+			<Cadastrar onClick={postCadastro}>Cadastrar</Cadastrar>
 
 			<Link to='/'>
 				<EntreAgora>Já tem uma conta? Entre agora!</EntreAgora>
@@ -62,7 +103,7 @@ const Container = styled.div`
 	}
 
 	input::placeholder {
-		color: #000000;
+		color: grey;
 	}
 
 	input {
@@ -77,7 +118,7 @@ const Container = styled.div`
 		font-weight: 400;
 		font-style: normal;
 
-		color: #dbdbdb;
+		color: darkgray;
 	}
 `;
 

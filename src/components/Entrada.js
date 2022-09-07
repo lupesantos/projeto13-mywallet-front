@@ -1,26 +1,67 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Entrada() {
+	const {
+		email,
+		setEmail,
+		password,
+		setPassword,
+		token,
+		setToken,
+		name,
+		setName,
+	} = useContext(UserContext);
+
+	const navigate = useNavigate();
+	function postLogin(event) {
+		event.preventDefault();
+
+		const dados = {
+			email: email,
+			password: password,
+		};
+
+		console.log(dados);
+		const requisicao = axios.post('http://localhost:5000/login', dados);
+		requisicao
+			.then((response) => {
+				setToken(response.data.token);
+				setName(response.data.name);
+				console.log(token);
+				console.log(name);
+				console.log(response.data);
+				navigate('/ola');
+			})
+			.catch(deuRuim);
+	}
+
+	function deuRuim() {
+		console.log('Deu RUIM!!!');
+	}
+
 	return (
 		<Container>
 			<p>MyWallet</p>
 
 			<input
 				type='text'
-				// value={email}
-				// onChange={(e) => setEmail(e.target.value)}
+				value={email}
+				onChange={(e) => setEmail(e.target.value)}
 				placeholder='E-mail'
 			/>
 			<input
 				type='text'
-				// value={password}
-				// onChange={(e) => setPassword(e.target.value)}
+				value={password}
+				onChange={(e) => setPassword(e.target.value)}
 				placeholder='Senha'
 			/>
-			<Link to='/ola'>
-				<Entrar>Entrar</Entrar>
-			</Link>
+
+			<Entrar onClick={postLogin}>Entrar</Entrar>
 
 			<Link to='/cadastro'>
 				<Cadastrar>Primeira vez? Cadastre-se!</Cadastrar>
@@ -50,7 +91,7 @@ const Container = styled.div`
 	}
 
 	input::placeholder {
-		color: #000000;
+		color: grey;
 	}
 
 	input {
@@ -65,7 +106,7 @@ const Container = styled.div`
 		font-weight: 400;
 		font-style: normal;
 
-		color: #dbdbdb;
+		color: darkgrey;
 	}
 `;
 

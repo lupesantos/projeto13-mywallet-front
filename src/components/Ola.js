@@ -1,11 +1,66 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import setinha from '../assets/images/Vector.png';
+import { useContext } from 'react';
+import UserContext from '../contexts/UserContext';
+import axios from 'axios';
+import { useEffect } from 'react';
+import InnOut from './InnOut';
+import Saldo from './Saldo';
 
 export default function Ola() {
+	const { token, extrato, setExtrato, name, clicked } = useContext(UserContext);
+
+	console.log(token);
+
+	useEffect(() => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+		const requisicao = axios.get('http://localhost:5000/extrato', config);
+		requisicao
+			.then((response) => {
+				setExtrato(response.data);
+				console.log(response.data);
+			})
+			.catch(deuRuim);
+	}, [clicked]);
+
+	function deuRuim() {
+		console.log('Deu RUIM!!!');
+	}
+
 	return (
 		<Container>
-			Olá, Fulano
-			<Registros>Não há registros de entrada ou saída</Registros>
+			<Header>
+				<h1>Olá, {name}</h1>
+				<Link to='/'>
+					<img src={setinha} alt='oi' />
+				</Link>
+			</Header>
+			{extrato.length === 0 ? (
+				<Registros>
+					<NaoReg>Não há registros de entrada ou saída</NaoReg>
+				</Registros>
+			) : (
+				<Registros>
+					<ListaRegistros>
+						{extrato.map((item, index) => (
+							<InnOut
+								key={index}
+								valor={item.valor}
+								descricao={item.descricao}
+								type={item.type}
+							/>
+						))}
+					</ListaRegistros>
+
+					<Saldo />
+				</Registros>
+			)}
+
 			<div>
 				<Link to='/novaentrada'>
 					<Nova>Nova entrada</Nova>
@@ -28,39 +83,14 @@ const Container = styled.div`
 	border: 1px solid grey; /*TEMPORARIO*/
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
 	align-items: center;
 
 	a:visited {
 		color: white;
 	}
-
-	p {
-		font-family: 'Saira Stencil One', cursive;
-	}
-
-	input::placeholder {
-		color: #000000;
-	}
-
-	input {
-		padding-left: 20px;
-		margin: 4px 0;
-		width: 326px;
-		height: 58px;
-		border: solid 1px #d5d5d5;
-		border-radius: 5px;
-		outline-width: 0;
-		font-size: 20px;
-		font-weight: 400;
-		font-style: normal;
-
-		color: #dbdbdb;
-	}
-
 	div {
 		display: flex;
-		gap: 15px;
 	}
 `;
 
@@ -68,14 +98,13 @@ const Registros = styled.div`
 	width: 326px;
 	height: 446px;
 	background-color: white;
-	color: #868686;
 	border-radius: 5px;
-	font-size: 20px;
-	font-weight: 400;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	text-align: center;
+	margin-top: 10px;
 `;
 const Nova = styled.div`
 	width: 155px;
@@ -87,4 +116,29 @@ const Nova = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 10px 10px;
+`;
+
+const NaoReg = styled.div`
+	color: #868686;
+
+	font-size: 20px;
+	font-weight: 400;
+`;
+
+const Header = styled.div`
+	width: 326px;
+	display: flex;
+	margin-top: 20px;
+	justify-content: space-between;
+`;
+
+const ListaRegistros = styled.div`
+	width: 326px;
+	height: 396px;
+	color: black;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow-y: auto;
 `;

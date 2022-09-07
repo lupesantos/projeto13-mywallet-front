@@ -1,25 +1,73 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import UserContext from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import axios from 'axios';
 
 export default function NewInn() {
+	const {
+		valor,
+		setValor,
+		descricao,
+		setDescricao,
+		token,
+		setClicked,
+		clicked,
+	} = useContext(UserContext);
+
+	const navigate = useNavigate();
+
+	function postEntrada(event) {
+		event.preventDefault();
+
+		const dados = {
+			valor: valor,
+			descricao: descricao,
+		};
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		};
+
+		console.log(dados);
+		console.log(config);
+
+		const requisicao = axios.post(
+			'http://localhost:5000/nova-entrada',
+			dados,
+			config
+		);
+		requisicao
+			.then((response) => {
+				console.log(response.data);
+				setClicked(!clicked);
+			})
+			.catch(deuRuim);
+
+		navigate('/ola');
+	}
+
+	function deuRuim() {
+		console.log('Deu RUIM!!!');
+	}
 	return (
 		<Container>
 			Nova entrada
 			<input
 				type='text'
-				// value={email}
-				// onChange={(e) => setEmail(e.target.value)}
+				value={valor}
+				onChange={(e) => setValor(e.target.value)}
 				placeholder='Valor'
 			/>
 			<input
 				type='text'
-				// value={password}
-				// onChange={(e) => setPassword(e.target.value)}
+				value={descricao}
+				onChange={(e) => setDescricao(e.target.value)}
 				placeholder='Descrição'
 			/>
-			<Link to='/ola'>
-				<Salvar>Salvar entrada</Salvar>
-			</Link>
+			<Salvar onClick={postEntrada}>Salvar entrada</Salvar>
 		</Container>
 	);
 }
@@ -46,7 +94,7 @@ const Container = styled.div`
 	}
 
 	input::placeholder {
-		color: #000000;
+		color: grey;
 	}
 
 	input {
@@ -61,7 +109,7 @@ const Container = styled.div`
 		font-weight: 400;
 		font-style: normal;
 
-		color: #dbdbdb;
+		color: darkgray;
 	}
 `;
 
