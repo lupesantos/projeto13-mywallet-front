@@ -13,6 +13,8 @@ export default function Ola() {
 	const { token, extrato, setExtrato, name, clicked } = useContext(UserContext);
 	const navigate = useNavigate();
 
+	console.log(token);
+
 	useEffect(() => {
 		const config = {
 			headers: {
@@ -44,7 +46,7 @@ export default function Ola() {
 			},
 		};
 
-		const requisicao = axios.put('http://localhost:5000/delete', config);
+		const requisicao = axios.delete('http://localhost:5000/delete', config);
 		requisicao.then(deuBom).catch(deuRuim);
 
 		navigate('/');
@@ -149,6 +151,11 @@ const Header = styled.div`
 	display: flex;
 	margin-top: 20px;
 	justify-content: space-between;
+
+	img {
+		width: 26px;
+		height: 26px;
+	}
 `;
 
 const ListaRegistros = styled.div`
