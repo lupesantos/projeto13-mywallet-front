@@ -10,7 +10,8 @@ export default function Saldo() {
 	let debito = extrato.filter((value) => value.type === 'saida');
 
 	saldo3 = somaArray(credito) - somaArray(debito);
-	console.log(saldo3);
+
+	let saldo5 = saldo3.toFixed(2);
 
 	function somaArray(array) {
 		let soma = 0;
@@ -27,7 +28,7 @@ export default function Saldo() {
 			<Saldo2>
 				<h1>Saldo</h1>
 
-				<p>{saldo3}</p>
+				<p>R$ {saldo5}</p>
 			</Saldo2>
 		);
 	} else {
@@ -35,7 +36,7 @@ export default function Saldo() {
 			<Saldo4>
 				<h1>Saldo</h1>
 
-				<p>{saldo3}</p>
+				<p>R$ {saldo5}</p>
 			</Saldo4>
 		);
 	}

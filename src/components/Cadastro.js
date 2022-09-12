@@ -29,7 +29,6 @@ export default function Cadastro() {
 			confirm: confirm,
 		};
 
-		console.log(dados);
 		const requisicao = axios.post('http://localhost:5000/cadastro', dados);
 		requisicao.then(deuBom).catch(deuRuim);
 
@@ -40,8 +39,8 @@ export default function Cadastro() {
 		console.log('Deu BOM!!!');
 	}
 
-	function deuRuim() {
-		console.log('Deu RUIM!!!');
+	function deuRuim(response) {
+		alert(response.response.data);
 	}
 
 	return (
@@ -132,8 +131,10 @@ const Cadastrar = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 10px;
 `;
 const EntreAgora = styled.div`
 	font-size: 15px;
 	font-weight: 700;
+	margin-top: 10px;
 `;

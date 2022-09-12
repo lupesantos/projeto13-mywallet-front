@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
-export default function InnOut({ index, valor, descricao, type }) {
+export default function InnOut({ index, valor, descricao, type, dia }) {
+	valor = Number(valor).toFixed(2);
+
 	return (
 		<InnOutContainer>
 			<Dia>
-				<h1>25/10</h1>
+				<h1>{dia}</h1>
 			</Dia>
 			<InnOutContainer2>
 				<Descricao>

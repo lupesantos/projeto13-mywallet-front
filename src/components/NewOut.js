@@ -31,9 +31,6 @@ export default function NewOut() {
 			},
 		};
 
-		console.log(dados);
-		console.log(config);
-
 		const requisicao = axios.post(
 			'http://localhost:5000/nova-saida',
 			dados,
@@ -41,7 +38,6 @@ export default function NewOut() {
 		);
 		requisicao
 			.then((response) => {
-				console.log(response.data);
 				setClicked(!clicked);
 			})
 			.catch(deuRuim);
@@ -49,8 +45,8 @@ export default function NewOut() {
 		navigate('/ola');
 	}
 
-	function deuRuim() {
-		console.log('Deu RUIM!!!');
+	function deuRuim(response) {
+		alert(response.response.data);
 	}
 	return (
 		<Container>
@@ -123,4 +119,5 @@ const Salvar = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 10px;
 `;

@@ -6,16 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Entrada() {
-	const {
-		email,
-		setEmail,
-		password,
-		setPassword,
-		token,
-		setToken,
-		name,
-		setName,
-	} = useContext(UserContext);
+	const { email, setEmail, password, setPassword, setToken, setName } =
+		useContext(UserContext);
 
 	const navigate = useNavigate();
 	function postLogin(event) {
@@ -26,22 +18,18 @@ export default function Entrada() {
 			password: password,
 		};
 
-		console.log(dados);
 		const requisicao = axios.post('http://localhost:5000/login', dados);
 		requisicao
 			.then((response) => {
 				setToken(response.data.token);
 				setName(response.data.name);
-				console.log(token);
-				console.log(name);
-				console.log(response.data);
 				navigate('/ola');
 			})
 			.catch(deuRuim);
 	}
 
-	function deuRuim() {
-		console.log('Deu RUIM!!!');
+	function deuRuim(response) {
+		alert(response.response.data);
 	}
 
 	return (
@@ -120,8 +108,10 @@ const Entrar = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 10px;
 `;
 const Cadastrar = styled.div`
 	font-size: 15px;
 	font-weight: 700;
+	margin-top: 10px;
 `;
