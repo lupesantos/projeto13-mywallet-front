@@ -13,5 +13,5 @@ That is a financial controller App
 
 ## About
 
-This project was very especial to my because was my first FullStack project and it was really great to do something from 0, including Frontend, Backand and database!
+This project was very especial to my because was my first FullStack project and it was really great to do something from 0, including Frontend, Backend and database!
 
